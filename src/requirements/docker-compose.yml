@@ -1,0 +1,55 @@
+
+services:
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_USER: ${MARIA_USER}
+      MARIADB_PASSWORD: ${MARIA_USER_PW}
+      MARIADB_ROOT_PASSWORD: ${ROOT_PW}
+      MARIADB_DATABASE: ${WORDPRESS_DB_NAME}
+    volumes:
+      - volume_mariadb:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+
+  wordpress:
+    container_name: wordpress
+    #build: .
+    image: wordpress:latest
+    restart: always
+    ports:
+      - 8081:80
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+    volumes:
+      - volume_wordpress:/var/www/html
+
+
+volumes:
+  volume_mariadb:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: $HOME/Desktop/typecraft/data/mariadb
+  volume_wordpress:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: $HOME/Desktop/typecraft/data/wordpress
+
