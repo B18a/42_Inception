@@ -1,0 +1,52 @@
+
+services:
+
+  mariadb:
+    container_name: mariadb42
+    build: ./requirements/mariadb
+    # image: mariadb:latest
+    # restart: always
+    env_file:
+      - ../secrets/.env
+    volumes:
+      - volume_mariadb:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+
+  # wordpress:
+  #   container_name: wordpress42
+  #   build: ./requirements/wordpress/
+  #   #image: wordpress:latest
+  #   restart: always
+  #   ports:
+  #     - 8081:80
+  #   # depends_on:
+  #   #   mariadb:
+  #   #     condition: service_healthy
+  #   env_file:
+  #     - ../secrets/.env
+  #   volumes:
+  #     - volume_wordpress:/var/www/html
+
+
+volumes:
+  volume_mariadb:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      # NEEDS TO BE CHANGED!!!
+      device: $HOME/Desktop/42_Inception/data/mariadb
+  volume_wordpress:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      # NEEDS TO BE CHANGED!!!
+      device: $HOME/Desktop/42_Inception/data/wordpress
+
