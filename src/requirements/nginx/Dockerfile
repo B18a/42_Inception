@@ -6,6 +6,6 @@ RUN apt-get update && \
 
 RUN apt-get install nano -y
 
-COPY www.conf /etc/nginx/sites-available/.
+COPY default /etc/nginx/sites-available/.
 
 CMD ["nginx", "-g", "daemon off;"]
