@@ -8,9 +8,10 @@ mariadb -e "CREATE USER IF NOT EXISTS \`${DB_USER}\`@'%' IDENTIFIED BY '${DB_PAS
 mariadb -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO \`${DB_USER}\`@'%';"
 mariadb -e "FLUSH PRIVILEGES;"
 
-mysqladmin -u root shutdown
+#mysqladmin -u root shutdown
+mariadbadmin -u root shutdown
 
-mysqld
+mariadb
 
 
 

@@ -7,6 +7,8 @@
 
 # this is only for the mysqld standalone daemon
 [mysqld]
+socket = /run/mysqld/mysqld.sock
+
 
 #
 # * Basic Settings

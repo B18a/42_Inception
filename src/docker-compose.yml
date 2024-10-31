@@ -1,21 +1,57 @@
 
 services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    ports:
+      - 80:90
+    # networks:
+    #   - net_nginx_wp
+  # wordpress:
+  #   container_name: wp-php
+  #   #image: wordpress:latest
+  #   build: ./requirements/wordpress
 
-  mariadb:
-    container_name: mariadb42
-    build: ./requirements/mariadb
-    # image: mariadb:latest
-    # restart: always
-    env_file:
-      - ../secrets/.env
-    volumes:
-      - volume_mariadb:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 3
+
+
+
+  # mariadb:
+  #   container_name: mariadb
+  #   build: ./requirements/mariadb
+  # #  image: mariadb:latest
+  #   restart: always
+  #   env_file:
+  #     - ../secrets/.env
+  #   volumes:
+  #     - vol_mariadb:/var/lib/mysql
+  #   networks:
+  #     - net_mariadb
+  #   healthcheck:
+  #     test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+  #     start_period: 10s
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+
+
+# volumes:
+#   vol_mariadb:
+#     name: vol_mariadb
+#     driver_opts:
+#       o: bind
+#       type: none
+#       # NEEDS TO BE CHANGED!!!
+#       device: $HOME/Desktop/42_Inception/data/mariadb
+
+networks:
+  net_mariadb:
+    name: net_mariadb
+  net_nginx_wp:
+    name: net_nginx_wp
+
+
+
+
 
 
   # wordpress:
@@ -32,21 +68,3 @@ services:
   #     - ../secrets/.env
   #   volumes:
   #     - volume_wordpress:/var/www/html
-
-
-volumes:
-  volume_mariadb:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      # NEEDS TO BE CHANGED!!!
-      device: $HOME/Desktop/42_Inception/data/mariadb
-  volume_wordpress:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      # NEEDS TO BE CHANGED!!!
-      device: $HOME/Desktop/42_Inception/data/wordpress
-
