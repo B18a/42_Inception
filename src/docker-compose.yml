@@ -4,9 +4,10 @@ services:
     container_name: nginx
     build: ./requirements/nginx
     ports:
-      - 90:90
-    # networks:
-    #   - net_nginx_wp
+      - 443:443
+    #  - 80:80
+    networks:
+       - net_nginx_wp
   # wordpress:
   #   container_name: wp-php
   #   #image: wordpress:latest

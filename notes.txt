@@ -1,0 +1,5 @@
+# Step 1: Create a private key
+sudo openssl genrsa -out /etc/ssl/private/selfsigned.key 2048
+
+# Step 2: Create a self-signed certificate
+sudo openssl req -new -x509 -key /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt -days 365
