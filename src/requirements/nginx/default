@@ -19,13 +19,19 @@
 # Default server configuration
 #
 server {
-        listen 90 default_server;
-        listen [::]:90 default_server;
+        #listen 80 default_server;
+        #listen [::]:80 default_server;
 
         # SSL configuration
         #
-        # listen 443 ssl default_server;
-        # listen [::]:443 ssl default_server;
+        listen 443 ssl default_server;
+        listen [::]:443 ssl default_server;
+
+        # changes:
+        ssl_certificate /etc/nginx/ssl/selfsigned.crt;
+        ssl_certificate_key /etc/nginx/ssl/selfsigned.key;
+
+
         #
         # Note: You should disable gzip for SSL traffic.
         # See: https://bugs.debian.org/773332
@@ -43,7 +49,7 @@ server {
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html;
 
-        server_name _;
+        server_name ajehle.42.fr;
 
         location / {
                 # First attempt to serve request as file, then
