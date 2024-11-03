@@ -1,0 +1,8 @@
+https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files
+
+
+*.conf-Files inside /etc/ngninx/conf.d This is the default directory, which nginx creates after installation. It is used to store virtual host configurations in the *.conf format. However, this is not the best approach.
+
+*.conf-Files inside /etc/nginx/sites-available A more elegant approach is to have the .conf file of your virtual host situated in sites-available.
+
+*.conf-Files inside /etc/nginx/sites-enabled This is where you would symlink the virtual hosts from sites-available, to make nginx read and work with them.
