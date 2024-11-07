@@ -1,0 +1,12 @@
+[req]
+default_bits       = 2048
+distinguished_name = req_distinguished_name
+prompt             = no
+
+[req_distinguished_name]
+C  = DE
+ST = BW
+L  = HB
+O  = 42
+OU = Student
+CN = ajehle.42.fr

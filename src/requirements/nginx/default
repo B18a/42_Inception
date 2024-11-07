@@ -33,7 +33,7 @@ server {
         ssl_protocols TLSv1.2 TLSv1.3;
 
 
-        
+
         # Note: You should disable gzip for SSL traffic.
         # See: https://bugs.debian.org/773332
         #
@@ -56,7 +56,7 @@ server {
 #        index index.html index.htm index.nginx-debian.html;
 #-------------------------------------------------------------------------
 
-        server_name ajehle.42.fr;
+        # server_name ajehle.42.fr;
 
         location / {
                 # First attempt to serve request as file, then
