@@ -2,11 +2,12 @@
 services:
   nginx:
     container_name: nginx
+    image: my_nginx_img
     build: ./requirements/nginx
     ports:
       - 443:443
-    networks:
-       - net_nginx_wp
+    # networks:
+    #    - net_nginx_wp
   # wordpress:
   #   container_name: wp-php
   #   #image: wordpress:latest
