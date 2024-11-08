@@ -1,18 +1,53 @@
 
 services:
+
   nginx:
     container_name: nginx
     image: my_nginx_img
     build: ./requirements/nginx
     ports:
       - 443:443
-    # networks:
-    #    - net_nginx_wp
+    networks:
+        - net_inception
+    volumes:
+      - vol_nginx_wp:/var/www/html
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_root_password
+      - MYSQL_DATABASE=your_database
+      - MYSQL_USER=your_user
+      - MYSQL_PASSWORD=your_password
+    ports:
+      - 3306:3306
+    networks:
+        - net_inception
+    volumes:
+      - vol_mariadb:/var/lib/mysql
+
   # wordpress:
   #   container_name: wp-php
   #   #image: wordpress:latest
   #   build: ./requirements/wordpress
 
+
+
+
+
+
+
+volumes:
+  vol_nginx_wp:
+    name: vol_nginx_wp
+  vol_mariadb:
+    name: vol_mariadb
+
+networks:
+  net_inception:
+    name: net_inception
 
 
 
@@ -43,14 +78,6 @@ services:
 #       type: none
 #       # NEEDS TO BE CHANGED!!!
 #       device: $HOME/Desktop/42_Inception/data/mariadb
-
-networks:
-  net_mariadb:
-    name: net_mariadb
-  net_nginx_wp:
-    name: net_nginx_wp
-
-
 
 
 
