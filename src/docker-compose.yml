@@ -10,89 +10,58 @@ services:
     networks:
         - net_inception
     volumes:
-      - vol_nginx_wp:/var/www/html
-
-  mariadb:
-    container_name: mariadb
-    image: mariadb
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=your_root_password
-      - MYSQL_DATABASE=your_database
-      - MYSQL_USER=your_user
-      - MYSQL_PASSWORD=your_password
-    ports:
-      - 3306:3306
-    networks:
-        - net_inception
-    volumes:
-      - vol_mariadb:/var/lib/mysql
-
-  # wordpress:
-  #   container_name: wp-php
-  #   #image: wordpress:latest
-  #   build: ./requirements/wordpress
-
-
-
-
-
-
-
-volumes:
-  vol_nginx_wp:
-    name: vol_nginx_wp
-  vol_mariadb:
-    name: vol_mariadb
-
-networks:
-  net_inception:
-    name: net_inception
-
+      - vol_nginx_wordpress:/var/www/html
 
 
   # mariadb:
   #   container_name: mariadb
-  #   build: ./requirements/mariadb
-  # #  image: mariadb:latest
+  #   image: mariadb
   #   restart: always
-  #   env_file:
-  #     - ../secrets/.env
-  #   volumes:
-  #     - vol_mariadb:/var/lib/mysql
-  #   networks:
-  #     - net_mariadb
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=your_root_password
+  #     - MYSQL_DATABASE=your_database
+  #     - MYSQL_USER=your_user
+  #     - MYSQL_PASSWORD=your_password
   #   healthcheck:
   #     test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
   #     start_period: 10s
   #     interval: 10s
   #     timeout: 5s
   #     retries: 3
-
-
-# volumes:
-#   vol_mariadb:
-#     name: vol_mariadb
-#     driver_opts:
-#       o: bind
-#       type: none
-#       # NEEDS TO BE CHANGED!!!
-#       device: $HOME/Desktop/42_Inception/data/mariadb
-
-
+  #   ports:
+  #     - 3306:3306
+  #   networks:
+  #       - net_inception
+  #   volumes:
+  #     - vol_mariadb:/var/lib/mysql
 
 
   # wordpress:
-  #   container_name: wordpress42
-  #   build: ./requirements/wordpress/
-  #   #image: wordpress:latest
-  #   restart: always
+  #   container_name: wp-php
+  #   image: wordpress:latest
+  # #   build: ./requirements/wordpress
+  #   depends_on:
+  #     - mariadb
+  #   environment:
+  #     WORDPRESS_DB_HOST: db
+  #     WORDPRESS_DB_USER: user
+  #     WORDPRESS_DB_PASSWORD: pass
+  #     WORDPRESS_DB_NAME: database
   #   ports:
-  #     - 8081:80
-  #   # depends_on:
-  #   #   mariadb:
-  #   #     condition: service_healthy
-  #   env_file:
-  #     - ../secrets/.env
+  #     - 9000:9000
+  #   networks:
+  #       - net_inception
   #   volumes:
-  #     - volume_wordpress:/var/www/html
+  #     - vol_nginx_wordpress:/var/www/html
+    
+
+volumes:
+  vol_nginx_wordpress:
+  vol_mariadb:
+
+
+networks:
+  net_inception:
+    name: net_inception
+    driver: bridge
+
