@@ -27,9 +27,7 @@ MARIADB_PASSWORD=my_password
 
 # Update packages and install MariaDB server
 RUN apt-get update && \
-apt-get install -y mariadb-server && \
-rm -rf /var/lib/apt/lists/*
-
+apt-get install -y mariadb-server
 # Copy the entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 

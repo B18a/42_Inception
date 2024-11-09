@@ -5,9 +5,9 @@ RUN apt-get update && \
     apt-get install -y nginx && \
     apt-get install openssl
 
-COPY openssl.cnf .
-COPY default /etc/nginx/sites-available/.
+COPY ./tools/openssl.cnf .
+COPY ./tools/default /etc/nginx/sites-available/.
 
-COPY init.sh .
+COPY ./tools/init.sh .
 RUN chmod +x init.sh
 ENTRYPOINT [ "./init.sh" ]
