@@ -18,12 +18,12 @@ server {
         location ~ \.php$ {
 
                 try_files $uri $uri/ =404;
-                # fastcgi_pass wordpress:9000;
-                # include fastcgi_params;
+                fastcgi_pass wordpress:9000;
+                include fastcgi_params;
 
 #The fastcgi_param directive sets a FastCGI parameter. 
 #The SCRIPT_FILENAME parameter specifies the path to the PHP script that should be executed.
-                # fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
         }
 

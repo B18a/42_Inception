@@ -1,15 +1,17 @@
 
+# images names must be changed!!!!!!
+
 services:
 
   nginx:
     container_name: nginx
     image: my_nginx_img
     build: ./requirements/nginx
+    restart: always
     # depends_on:
     #   - wordpress
-    # env_file:
-    #   - .env
-    # restart: always
+    env_file:
+      - .env
     ports:
       - 443:443
     networks:
@@ -18,46 +20,41 @@ services:
       - vol_nginx_wordpress:/var/www/html
 
 
-  # mariadb:
-  #   container_name: mariadb
-  #   image: mariadb
-  #   restart: always
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=your_root_password
-  #     - MYSQL_DATABASE=your_database
-  #     - MYSQL_USER=your_user
-  #     - MYSQL_PASSWORD=your_password
+  mariadb:
+    container_name: mariadb
+    image: my_maridb_img
+    build: ./requirements/mariadb
+    restart: always
   #   healthcheck:
   #     test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
   #     start_period: 10s
   #     interval: 10s
   #     timeout: 5s
   #     retries: 3
+    env_file:
+      - .env
+    networks:
+        - net_inception
+    volumes:
+      - vol_mariadb:/var/lib/mysql
   #   ports:
   #     - 3306:3306
-  #   networks:
-  #       - net_inception
-  #   volumes:
-  #     - vol_mariadb:/var/lib/mysql
 
 
-  # wordpress:
-  #   container_name: wp-php
-  #   image: wordpress:latest
-  # #   build: ./requirements/wordpress
-  #   depends_on:
-  #     - mariadb
-  #   environment:
-  #     WORDPRESS_DB_HOST: db
-  #     WORDPRESS_DB_USER: user
-  #     WORDPRESS_DB_PASSWORD: pass
-  #     WORDPRESS_DB_NAME: database
+  wordpress:
+    container_name: wordpress
+    image: my_wordpress_img
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    networks:
+        - net_inception
+    volumes:
+      - vol_nginx_wordpress:/var/www/html
   #   ports:
   #     - 9000:9000
-  #   networks:
-  #       - net_inception
-  #   volumes:
-  #     - vol_nginx_wordpress:/var/www/html
     
 
 volumes:

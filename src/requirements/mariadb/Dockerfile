@@ -8,9 +8,4 @@ COPY ./tools/start.sh /start.sh
 
 RUN chmod +x /start.sh
 
-ENV DATABASE_NAME=mydb
-ENV DATABASE_USER=myuser
-ENV DATABASE_PWD=mypassword
-
-
 CMD [ "/start.sh" ]
