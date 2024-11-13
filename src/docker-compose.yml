@@ -1,12 +1,23 @@
 
 # images names must be changed!!!!!!
 
+
+volumes:
+  vol_nginx_wordpress:
+  vol_mariadb:
+
+
+networks:
+  net_inception:
+    name: net_inception
+    # driver: bridge
+
 services:
 
   nginx:
     container_name: nginx
     image: my_nginx_img
-    build: ./requirements/nginx
+    build: ./requirements/nginx/.
     restart: always
     # depends_on:
     #   - wordpress
@@ -19,18 +30,18 @@ services:
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
-
   mariadb:
     container_name: mariadb
     image: my_maridb_img
-    build: ./requirements/mariadb
+    build: ./requirements/mariadb/.
     restart: always
-  #   healthcheck:
-  #     test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-  #     start_period: 10s
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 3
+    # script is missing!!!!
+    # healthcheck:
+    #   test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+    #   start_period: 10s
+    #   interval: 10s
+    #   timeout: 15s
+    #   retries: 3
     env_file:
       - .env
     networks:
@@ -40,11 +51,10 @@ services:
   #   ports:
   #     - 3306:3306
 
-
   wordpress:
     container_name: wordpress
     image: my_wordpress_img
-    build: ./requirements/wordpress
+    build: ./requirements/wordpress/.
     depends_on:
       - mariadb
     env_file:
@@ -55,15 +65,3 @@ services:
       - vol_nginx_wordpress:/var/www/html
   #   ports:
   #     - 9000:9000
-    
-
-volumes:
-  vol_nginx_wordpress:
-  vol_mariadb:
-
-
-networks:
-  net_inception:
-    name: net_inception
-    # driver: bridge
-

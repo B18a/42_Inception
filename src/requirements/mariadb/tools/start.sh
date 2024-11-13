@@ -22,7 +22,8 @@ echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '12345';" >> db1.sql
 echo "FLUSH PRIVILEGES;" >> db1.sql
 
 # Execute the SQL script to create database and users
-mysql < db1.sql
+ mysql < db1.sql
+
 
 # Remove the SQL script for cleanup
 rm db1.sql
