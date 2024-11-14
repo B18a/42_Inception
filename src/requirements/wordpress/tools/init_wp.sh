@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 mkdir -p /run/php
 # chown -R www-data:www-data /run/php
 
@@ -9,27 +8,37 @@ mkdir -p /run/php
 
 
 # Prerequisites
+rm -f /usr/local/bin/wp
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
-
+chown www-data:www-data /usr/local/bin/wp
 
 # Configure WordPress
-mkdir -p /var/www/html/${DOMAIN_NAME}/public_html
-chown -R www-data:www-data /var/www/html/${DOMAIN_NAME}/public_html
-chown www-data:www-data /var/www/html/${DOMAIN_NAME}/public_html
+mkdir -p /var/www/html/$DOMAIN_NAME/public_html
+chown -R www-data:www-data /var/www/html/$DOMAIN_NAME/public_html
+chown www-data:www-data /var/www/html/$DOMAIN_NAME/public_html
 
 mkdir -p /var/www/.wp-cli/cache
 chown -R www-data:www-data /var/www/.wp-cli
 
-# Download the WordPress files
-WP_PATH="/var/www/html/${DOMAIN_NAME}/public_html"
 
+
+# Download the WordPress files
+WP_PATH="/var/www/html/$DOMAIN_NAME/public_html"
 
 wp core download --path=$WP_PATH --allow-root
 
 
-# Create a wp-config.php file
+
+# wp config create --path='/var/www/html/ajehle.42.fr/public_html' --dbname=$DATABASE_NAME --dbuser=$DATABASE_USER --dbpass=$DATABASE_PWD --dbhost=$DATABASE_HOST --allow-root
+# wp core config --path='/var/www/html/ajehle.42.fr/public_html' --dbname=$DATABASE_NAME --dbuser=$DATABASE_USER --dbpass=$DATABASE_PWD --dbhost=$DATABASE_HOST --allow-root
+
+echo "WP_PATH: $WP_PATH"
+echo "DOMAIN_NAME: $DOMAIN_NAME"
+echo "DATABASE_HOST: $DATABASE_HOST"
+
+echo "Create a wp-config.php file"
 wp core config \
     --path=$WP_PATH \
     --dbname=$DATABASE_NAME \
@@ -50,5 +59,12 @@ wp core install \
     --allow-root
 
 sed -i 's|listen = /run/php/php7.4-fpm.sock|listen = 0.0.0.0:9000|g' /etc/php/7.4/fpm/pool.d/www.conf
+
+
+
+wp theme install astra \
+    --path=$WP_PATH \
+    --activate \
+    --allow-root
 
 exec php-fpm7.4 -F

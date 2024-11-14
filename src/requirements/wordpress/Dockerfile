@@ -1,8 +1,6 @@
 FROM debian:bullseye
 
 RUN apt-get update &&  apt-get upgrade -y && \
-    # apt-get install sudo && \
-    # apt-get install -y php php7.4-fpm php-gd php-mysqli && \
     apt-get install -y php-fpm php-mysqli && \
     apt-get install -y curl
 

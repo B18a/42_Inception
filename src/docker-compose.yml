@@ -20,8 +20,8 @@ services:
     image: my_nginx_img
     build: ./requirements/nginx/.
     restart: always
-    # depends_on:
-    #   - wordpress
+    depends_on:
+      - wordpress
     env_file:
       - .env
     ports:
