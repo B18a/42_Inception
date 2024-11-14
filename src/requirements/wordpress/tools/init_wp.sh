@@ -37,8 +37,14 @@ wp core download --path=$WP_PATH --allow-root
 echo "WP_PATH: $WP_PATH"
 echo "DOMAIN_NAME: $DOMAIN_NAME"
 echo "DATABASE_HOST: $DATABASE_HOST"
+echo "DATABASE_NAME: $DATABASE_NAME"
+echo "DATABASE_USER: $DATABASE_USER"
+echo "DATABASE_PWD: $DATABASE_PWD"
 
 echo "Create a wp-config.php file"
+ 
+cd $WP_PATH
+
 wp core config \
     --path=$WP_PATH \
     --dbname=$DATABASE_NAME \

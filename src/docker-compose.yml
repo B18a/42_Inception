@@ -65,5 +65,6 @@ services:
         - net_inception
     volumes:
       - vol_nginx_wordpress:/var/www/html
-  #   ports:
-  #     - 9000:9000
+    # ports:
+    #   - 9000:80
+    #   - 9001:8080
