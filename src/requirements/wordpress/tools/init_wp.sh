@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+mkdir -p /run/php
+# chown -R www-data:www-data /run/php
+
 #  RTFM! 
 # https://www.linode.com/docs/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/#download-and-configure-wordpress
 
@@ -11,48 +15,40 @@ mv wp-cli.phar /usr/local/bin/wp
 
 
 # Configure WordPress
-sudo mkdir -p /var/www/html/${DOMAIN_NAME}/public_html
-sudo chown -R www-data:www-data /var/www/html/${DOMAIN_NAME}/public_html
-sudo chown www-data:www-data /var/www/html/${DOMAIN_NAME}/public_html
+mkdir -p /var/www/html/${DOMAIN_NAME}/public_html
+chown -R www-data:www-data /var/www/html/${DOMAIN_NAME}/public_html
+chown www-data:www-data /var/www/html/${DOMAIN_NAME}/public_html
 
-sudo mkdir -p /var/www/.wp-cli/cache
-sudo chown -R www-data:www-data /var/www/.wp-cli
+mkdir -p /var/www/.wp-cli/cache
+chown -R www-data:www-data /var/www/.wp-cli
 
 # Download the WordPress files
 WP_PATH="/var/www/html/${DOMAIN_NAME}/public_html"
 
 
-sudo -u www-data wp core download --path=$WP_PATH
+wp core download --path=$WP_PATH --allow-root
 
 
 # Create a wp-config.php file
-# sudo -u www-data wp core config \
-sudo -u www-data wp config create \
+wp core config \
     --path=$WP_PATH \
-    --dbname='mydb' \
-    --dbuser='myuser' \
-    --dbpass='mypassword' \
-    --dbhost='localhost'
+    --dbname=$DATABASE_NAME \
+    --dbuser=$DATABASE_USER \
+    --dbpass=$DATABASE_PWD \
+    --dbhost=$DATABASE_HOST \
+    --allow-root
 
 
-# # Run the installation
-# sudo -u www-data wp core install \
-#     --path="$WP_PATH" \
-#     --url='http://example.com' \
-#     --title='42 INCEPTION' \
-#     --admin_user='adminuser' \
-#     --admin_password='password' \
-#     --admin_email='email@domain.com'
+# Run the installation
+wp core install \
+    --path=$WP_PATH \
+    --url=$DOMAIN_NAME \
+    --title='42 INCEPTION' \
+    --admin_user='adminuser' \
+    --admin_password='password' \
+    --admin_email='email@domain.com' \
+    --allow-root
 
-sudo -u www-data wp core install --path="$WP_PATH" --url='http://example.com' --title='42 INCEPTION' --admin_user='adminuser' --admin_password='password' --admin_email='email@domain.com'
+sed -i 's|listen = /run/php/php7.4-fpm.sock|listen = 0.0.0.0:9000|g' /etc/php/7.4/fpm/pool.d/www.conf
 
-
-
-
-
-# sudo -u www-data wp core download
-
-# # if already installed remove all
-# rm -rf *
-
-php-fpm -F
+exec php-fpm7.4 -F

@@ -59,7 +59,6 @@ services:
     restart: always
     depends_on:
       - mariadb
-      - nginx
     env_file:
       - .env
     networks:
