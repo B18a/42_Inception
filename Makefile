@@ -1,7 +1,7 @@
 
 NAME = inception
 COMPOSE_FILE = src/docker-compose.yml
-ENV_FILE = secrets/.env
+ENV_FILE = src/.env
 DATA = /Users/ajehle/Desktop/42_Inception
 
 up:

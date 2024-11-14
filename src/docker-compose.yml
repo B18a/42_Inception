@@ -12,6 +12,7 @@ networks:
     name: net_inception
     # driver: bridge
 
+
 services:
 
   nginx:
@@ -55,8 +56,10 @@ services:
     container_name: wordpress
     image: my_wordpress_img
     build: ./requirements/wordpress/.
+    restart: always
     depends_on:
       - mariadb
+      - nginx
     env_file:
       - .env
     networks:
