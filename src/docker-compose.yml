@@ -1,3 +1,4 @@
+version: '3.8'
 
 # images names must be changed!!!!!!
 
@@ -10,8 +11,6 @@ volumes:
 networks:
   net_inception:
     name: net_inception
-    # driver: bridge
-
 
 services:
 
@@ -49,8 +48,6 @@ services:
         - net_inception
     volumes:
       - vol_mariadb:/var/lib/mysql
-  #   ports:
-  #     - 3306:3306
 
   wordpress:
     container_name: wordpress
@@ -65,6 +62,3 @@ services:
         - net_inception
     volumes:
       - vol_nginx_wordpress:/var/www/html
-    # ports:
-    #   - 9000:80
-    #   - 9001:8080

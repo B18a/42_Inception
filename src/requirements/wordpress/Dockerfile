@@ -1,9 +1,10 @@
 FROM debian:bullseye
 
-USER root
+# USER root
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y php-fpm php-mysqli && \
+    # apt-get install -y mariadb-client && \
     apt-get install -y curl
 
 
