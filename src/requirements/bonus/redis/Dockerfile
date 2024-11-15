@@ -1,8 +1,15 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y redis-server && \
-    apt-get install -y systemctl
+    apt-get install -y redis-server
+
+# Copy the custom redis.conf file into the container
+COPY redis.conf /etc/redis/redis.conf
+
+# Start Redis with the custom configuration
+CMD ["redis-server", "/etc/redis/redis.conf"]
+
+
 
 
 # systemctl start redis-server
@@ -11,4 +18,9 @@ RUN apt-get update && apt-get upgrade -y && \
 # systemctl status redis-server
 
 
-#cat /var/log/redis/redis-server.log
+# redis-server /etc/redis/redis.conf
+# cat /var/log/redis/redis-server.log
+
+
+# docker run --name red -it -p 6380:6379 redtest
+# docker run --name red -it -p 6379:6379 redtest

@@ -62,3 +62,22 @@ services:
         - net_inception
     volumes:
       - vol_nginx_wordpress:/var/www/html
+  
+  redis:
+    container_name: redis
+    image: my_redis_img
+    build: ./requirements/bonus/redis/.
+    restart: always
+    depends_on:
+      - wordpress
+    networks:
+        - net_inception
+    volumes:
+      - vol_nginx_wordpress:/var/www/html
+    # command: ["redis-server", "/etc/redis/redis.conf"]  # Explicit command
+    # healthcheck:
+    #   test: ["CMD", "redis-cli", "ping"]
+    #   interval: 10s
+    #   retries: 5
+    #   start_period: 30s
+    #   timeout: 10s
