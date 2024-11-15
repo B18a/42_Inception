@@ -14,7 +14,11 @@ build:
 	docker-compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) build
 
 down:
+	docker stop nginx
+	docker stop mariadb
+	docker stop wordpress
 	docker-compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) down
+# docker stop $$(docker ps -qa)
 
 logs:
 	docker-compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) logs -f wordpress
@@ -22,8 +26,8 @@ logs:
 remove:
 	@if [ -n "$$(docker ps -qa)" ]; then docker stop $$(docker ps -qa); fi
 	@if [ -n "$$(docker ps -qa)" ]; then docker rm $$(docker ps -qa); fi
-	@if [ -n "$$(docker images -qa)" ]; then docker rmi -f $$(docker images -qa); fi
-	@if [ -n "$$(docker network ls -q)" ]; then docker network rm $$(docker network ls -q) 2>/dev/null || true; fi
+#	@if [ -n "$$(docker images -qa)" ]; then docker rmi -f $$(docker images -qa); fi
+#	@if [ -n "$$(docker network ls -q)" ]; then docker network rm $$(docker network ls -q) 2>/dev/null || true; fi
 
 removeall:
 	@if [ -n "$$(docker ps -qa)" ]; then docker stop $$(docker ps -qa); fi

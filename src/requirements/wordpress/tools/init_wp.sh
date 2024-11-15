@@ -1,60 +1,51 @@
 #!/bin/bash
 
-sleep 15
-
-mkdir -p /run/php
-# chown -R www-data:www-data /run/php
-
-#  RTFM! 
+#########
+# RTFM! #
+#########
 # https://www.linode.com/docs/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/#download-and-configure-wordpress
 
 
-# Prerequisites
+sleep 15
+mkdir -p /run/php
+# chown -R www-data:www-data /run/php
+
+
+#################
+# Prerequisites #
+#################
+echo "[WORDPRESS] Prerequisites"
 rm -f /usr/local/bin/wp
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 chown www-data:www-data /usr/local/bin/wp
 
-# Configure WordPress
+###################################
+# Configure WordPress Directories #
+###################################
+echo "[WORDPRESS] Configure Directories"
 mkdir -p /var/www/html/$DOMAIN_NAME/public_html
 chown -R www-data:www-data /var/www/html/$DOMAIN_NAME/public_html
 chown www-data:www-data /var/www/html/$DOMAIN_NAME/public_html
-
 mkdir -p /var/www/.wp-cli/cache
 chown -R www-data:www-data /var/www/.wp-cli
 
-
-
-# Download the WordPress files
+################################
+# Download the WordPress files #
+################################
+echo "[WORDPRESS] Download Wordpress files"
 WP_PATH="/var/www/html/$DOMAIN_NAME/public_html"
-
 wp core download --path=$WP_PATH --allow-root
 
-
-
-# wp config create --path='/var/www/html/ajehle.42.fr/public_html' --dbname=$DATABASE_NAME --dbuser=$DATABASE_USER --dbpass=$DATABASE_PWD --dbhost=$DATABASE_HOST --allow-root
-# wp core config --path='/var/www/html/ajehle.42.fr/public_html' --dbname=$DATABASE_NAME --dbuser=$DATABASE_USER --dbpass=$DATABASE_PWD --dbhost=$DATABASE_HOST --allow-root
-
-# echo "WP_PATH       : $WP_PATH"
-# echo "DOMAIN_NAME   : $DOMAIN_NAME"
-# echo "DATABASE_NAME : $DATABASE_NAME"
-# echo "DATABASE_USER : $DATABASE_USER"
-# echo "DATABASE_PWD  : $DATABASE_PWD"
-# echo "DATABASE_HOST : $DATABASE_HOST"
-
-# echo "WP_ADMIN_USER : $WP_ADMIN_USER"
-# echo "WP_ADMIN_PW   : $WP_ADMIN_PW"
-# echo "WP_ADMIN_MAIL : $WP_ADMIN_MAIL"
-
-# Wait until the MariaDB server is ready to accept connections
-# until mariadb ping --silent; do
-#     echo "Waiting for MariaDB to be ready..."
-#     sleep 2
-# done
-
-# Create a config
+###################
+# Create a config #
+###################
+# wp-config.php
+###################
+echo "[WORDPRESS] Create a config"
 cd $WP_PATH
+# path must be changed in order to execute the config command otherwise it wont work
 wp config create \
     --path=$WP_PATH \
     --dbname=$DATABASE_NAME \
@@ -63,8 +54,21 @@ wp config create \
     --dbhost=$DATABASE_HOST \
     --allow-root
 
-    # --url=$DOMAIN_NAME \
-# Run the installation
+
+########################################################
+# Ensure database is ready before installing WordPress #
+########################################################
+echo "[WORDPRESS] Database Check"
+until wp db check --allow-root; do
+  echo "[WORDPRESS] Waiting for MariaDB to be ready..."
+  sleep 5
+done
+
+
+########################
+# Run the installation #
+########################
+echo "[WORDPRESS] Run the installation"
 wp core install \
     --path=$WP_PATH \
     --url='localhost' \
@@ -73,14 +77,22 @@ wp core install \
     --admin_password=$WP_ADMIN_PW \
     --admin_email=$WP_ADMIN_MAIL \
     --allow-root
+    # --url=$DOMAIN_NAME \
 
+####################
+# configure socket #
+####################
 sed -i 's|listen = /run/php/php7.4-fpm.sock|listen = 0.0.0.0:9000|g' /etc/php/7.4/fpm/pool.d/www.conf
 
+############################
+# theme install - optional #
+############################
+# wp theme install astra \
+#     --path=$WP_PATH \
+#     --activate \
+#     --allow-root
 
-
-wp theme install astra \
-    --path=$WP_PATH \
-    --activate \
-    --allow-root
-
+###########
+# execute #
+###########
 exec php-fpm7.4 -F
