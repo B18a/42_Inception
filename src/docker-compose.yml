@@ -108,3 +108,17 @@ services:
       - vol_mariadb:/var/lib/mysql
     ports:
       - 8080:80
+
+  website:
+    container_name: website
+    image: my_website_img
+    build: ./requirements/bonus/website/.
+    restart: always
+    # depends_on:
+    #   - mariadb
+    networks:
+        - net_inception
+    # volumes:
+    #   - vol_mariadb:/var/lib/mysql
+    ports:
+      - 85:80
