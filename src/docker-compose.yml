@@ -1,4 +1,3 @@
-version: '3.8'
 
 # images names must be changed!!!!!!
 
@@ -82,16 +81,30 @@ services:
     #   start_period: 30s
     #   timeout: 10s
 
-  ftp:
-    container_name: ftp
-    image: my_ftp_img
-    build: ./requirements/bonus/ftp/.
+  # ftp:
+  #   container_name: ftp
+  #   image: my_ftp_img
+  #   build: ./requirements/bonus/ftp/.
+  #   restart: always
+  #   depends_on:
+  #     - wordpress
+  #   networks:
+  #       - net_inception
+  #   volumes:
+  #     - vol_nginx_wordpress:/var/www/html
+  #   ports:
+  #     - 21:21
+
+  adminer:
+    container_name: adminer
+    image: my_adminer_img
+    build: ./requirements/bonus/adminer/.
     restart: always
     depends_on:
-      - wordpress
+      - mariadb
     networks:
         - net_inception
     volumes:
-      - vol_nginx_wordpress:/var/www/html
+      - vol_mariadb:/var/lib/mysql
     ports:
-      - 21:21
+      - 8080:80
