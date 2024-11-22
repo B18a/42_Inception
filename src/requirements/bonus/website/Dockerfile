@@ -7,8 +7,5 @@ RUN apt-get update && apt-get upgrade -y && \
 # Copy your static website files into the default Lighttpd directory
 COPY index.html /var/www/html/
 
-# Expose port 80
-EXPOSE 81
-
 # Start the Lighttpd service
 CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]

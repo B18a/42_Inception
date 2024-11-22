@@ -30,7 +30,8 @@ services:
     ports:
       - 443:443
     networks:
-        - net_inception
+        net_inception:
+          ipv4_address: 192.168.1.99
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
@@ -121,7 +122,7 @@ services:
     restart: always
     networks:
         net_inception:
-          ipv4_address: 192.168.1.5
+          ipv4_address: 192.168.1.100
     ports:
       - 85:80
 
@@ -135,6 +136,7 @@ services:
     networks:
         - net_inception
     volumes:
+      - vol_kuma:/app/data
       - vol_kuma:/app/data
     ports:
       - 3001:3001
