@@ -5,11 +5,16 @@
 volumes:
   vol_nginx_wordpress:
   vol_mariadb:
+  vol_kuma:
 
 
 networks:
   net_inception:
     name: net_inception
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
 
 services:
 
@@ -114,11 +119,22 @@ services:
     image: my_website_img
     build: ./requirements/bonus/website/.
     restart: always
-    # depends_on:
-    #   - mariadb
     networks:
-        - net_inception
-    # volumes:
-    #   - vol_mariadb:/var/lib/mysql
+        net_inception:
+          ipv4_address: 192.168.1.5
     ports:
       - 85:80
+
+  kuma:
+    container_name: kuma
+    image: my_kuma_img
+    build: ./requirements/bonus/kuma/.
+    restart: always
+    depends_on:
+      - website
+    networks:
+        - net_inception
+    volumes:
+      - vol_kuma:/app/data
+    ports:
+      - 3001:3001

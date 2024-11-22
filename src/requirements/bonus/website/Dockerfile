@@ -8,7 +8,7 @@ RUN apt-get update && apt-get upgrade -y && \
 COPY index.html /var/www/html/
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 81
 
 # Start the Lighttpd service
 CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
