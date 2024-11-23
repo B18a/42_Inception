@@ -2,11 +2,18 @@
 # images names must be changed!!!!!!
 # version: '3.8'
 
+##################################################
+# --------------------- VOLUMES ---------------- #
+##################################################
+
 volumes:
   vol_nginx_wordpress:
   vol_mariadb:
   vol_kuma:
 
+##################################################
+# --------------------- NETWORKS --------------- #
+##################################################
 
 networks:
   net_inception:
@@ -16,6 +23,9 @@ networks:
       config:
         - subnet: 192.168.1.0/24
 
+##################################################
+# --------------------- SECRETS----------------- #
+##################################################
 secrets:
   wp_admin_pw:
     file: ./secrets/wp_admin_pw.txt
@@ -23,9 +33,11 @@ secrets:
     file: ./secrets/db_user_pw.txt
   db_root_pw:
     file: ./secrets/db_root_pw.txt
-  
 
 services:
+##################################################
+# --------------------- NGINX ------------------ #
+##################################################
 
   nginx:
     container_name: nginx
@@ -44,6 +56,9 @@ services:
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
+##################################################
+# --------------------- MARIADB ---------------- #
+##################################################
 
   mariadb:
     container_name: mariadb
@@ -58,13 +73,15 @@ services:
     secrets:
       - db_user_pw
       - db_root_pw
-
-
     networks:
         net_inception:
           ipv4_address: 192.168.1.100
     volumes:
       - vol_mariadb:/var/lib/mysql
+
+##################################################
+# --------------------- WORDPRESS -------------- #
+##################################################
 
   wordpress:
     container_name: wordpress
@@ -79,15 +96,22 @@ services:
       - WP_ADMIN_PW=/run/secrets/wp_admin_pw
       - DB_USER_PW=/run/secrets/db_user_pw
     secrets:
-      - wp_admin_pw
+      - source: wp_admin_pw
+        target: /run/secrets/wp_admin_pw
+      # - wp_admin_pw
       - db_user_pw
-
     networks:
         net_inception:
           ipv4_address: 192.168.1.101
     volumes:
       - vol_nginx_wordpress:/var/www/html
   
+##################################################
+# --------------------- BONUS ------------------ #
+##################################################
+# --------------------- REDIS ------------------ #
+##################################################
+
   redis:
     container_name: redis
     image: my_redis_img
@@ -101,6 +125,9 @@ services:
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
+##################################################
+# --------------------- FTP -------------------- #
+##################################################
 
   # ftp:
   #   container_name: ftp
@@ -117,6 +144,10 @@ services:
   #   ports:
   #     - 21:21
 
+##################################################
+# --------------------- ADMINER ---------------- #
+##################################################
+
   adminer:
     container_name: adminer
     image: my_adminer_img
@@ -132,6 +163,10 @@ services:
     ports:
       - 8080:80
 
+##################################################
+# --------------------- WEBSITE ---------------- #
+##################################################
+
   website:
     container_name: website
     image: my_website_img
@@ -142,6 +177,11 @@ services:
           ipv4_address: 192.168.1.105
     ports:
       - 85:80
+
+
+##################################################
+# --------------------- KUMA ------------------- #
+##################################################
 
   kuma:
     container_name: kuma
