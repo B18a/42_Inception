@@ -48,10 +48,10 @@ cd $WP_PATH
 # path must be changed in order to execute the config command otherwise it wont work
 wp config create \
     --path=$WP_PATH \
-    --dbname=$DATABASE_NAME \
-    --dbuser=$DATABASE_USER \
-    --dbpass=$DATABASE_PWD \
-    --dbhost=$DATABASE_HOST \
+    --dbname=$DB_NAME \
+    --dbuser=$DB_USER \
+    --dbpass=$DB_USER_PW \
+    --dbhost=$DB_HOST \
     --allow-root
 
 
