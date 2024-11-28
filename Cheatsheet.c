@@ -43,6 +43,7 @@ docker exec -it my-container /bin/bash
 
 
 docker run -it --name testrun -v /Users/ajehle/Desktop/local_inception:/root testimage
+docker run -it --name testrun -v /Users/ajehle/Desktop/local_inception:/root ftpimg
 
 
 // mariadb
