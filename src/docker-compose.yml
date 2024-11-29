@@ -19,9 +19,9 @@ networks:
   net_inception:
     name: net_inception
     driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.1.0/24
+    # ipam:
+    #   config:
+    #     - subnet: 192.168.1.0/24
 
 ##################################################
 # --------------------- SECRETS----------------- #
@@ -52,7 +52,7 @@ services:
       - 443:443
     networks:
         net_inception:
-          ipv4_address: 192.168.1.99
+          # ipv4_address: 192.168.1.99
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
@@ -75,7 +75,7 @@ services:
       - db_root_pw
     networks:
         net_inception:
-          ipv4_address: 192.168.1.100
+          # ipv4_address: 192.168.1.100
     volumes:
       - vol_mariadb:/var/lib/mysql
 
@@ -92,17 +92,15 @@ services:
       - mariadb
     env_file:
       - .env
-    environment:
-      - WP_ADMIN_PW=/run/secrets/wp_admin_pw
-      - DB_USER_PW=/run/secrets/db_user_pw
+    # environment:
+    #   - WP_ADMIN_PW=/run/secrets/wp_admin_pw
+    #   - DB_USER_PW=/run/secrets/db_user_pw
     secrets:
-      - source: wp_admin_pw
-        target: /run/secrets/wp_admin_pw
-      # - wp_admin_pw
+      - wp_admin_pw
       - db_user_pw
     networks:
         net_inception:
-          ipv4_address: 192.168.1.101
+          # ipv4_address: 192.168.1.101
     volumes:
       - vol_nginx_wordpress:/var/www/html
   
@@ -121,78 +119,78 @@ services:
       - wordpress
     networks:
         net_inception:
-          ipv4_address: 192.168.1.102
+          # ipv4_address: 192.168.1.102
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
-##################################################
-# --------------------- FTP -------------------- #
-##################################################
+# ##################################################
+# # --------------------- FTP -------------------- #
+# ##################################################
 
-  ftp:
-    container_name: ftp
-    image: my_ftp_img
-    build: ./requirements/bonus/ftp/.
-    restart: always
-    depends_on:
-      - wordpress
-    networks:
-        net_inception:
-          ipv4_address: 192.168.1.103
-    volumes:
-      - vol_nginx_wordpress:/var/www/html
-    ports:
-      - 30:21
+#   ftp:
+#     container_name: ftp
+#     image: my_ftp_img
+#     build: ./requirements/bonus/ftp/.
+#     restart: always
+#     depends_on:
+#       - wordpress
+#     networks:
+#         net_inception:
+#           # ipv4_address: 192.168.1.103
+#     volumes:
+#       - vol_nginx_wordpress:/var/www/html
+#     ports:
+#       - 30:21
 
-##################################################
-# --------------------- ADMINER ---------------- #
-##################################################
+# ##################################################
+# # --------------------- ADMINER ---------------- #
+# ##################################################
 
-  adminer:
-    container_name: adminer
-    image: my_adminer_img
-    build: ./requirements/bonus/adminer/.
-    restart: always
-    depends_on:
-      - mariadb
-    networks:
-        net_inception:
-          ipv4_address: 192.168.1.104
-    volumes:
-      - vol_mariadb:/var/lib/mysql
-    ports:
-      - 8080:80
+#   adminer:
+#     container_name: adminer
+#     image: my_adminer_img
+#     build: ./requirements/bonus/adminer/.
+#     restart: always
+#     depends_on:
+#       - mariadb
+#     networks:
+#         net_inception:
+#           # ipv4_address: 192.168.1.104
+#     volumes:
+#       - vol_mariadb:/var/lib/mysql
+#     ports:
+#       - 8080:80
 
-##################################################
-# --------------------- WEBSITE ---------------- #
-##################################################
+# ##################################################
+# # --------------------- WEBSITE ---------------- #
+# ##################################################
 
-  website:
-    container_name: website
-    image: my_website_img
-    build: ./requirements/bonus/website/.
-    restart: always
-    networks:
-        net_inception:
-          ipv4_address: 192.168.1.105
-    ports:
-      - 85:80
+#   website:
+#     container_name: website
+#     image: my_website_img
+#     build: ./requirements/bonus/website/.
+#     restart: always
+#     networks:
+#         net_inception:
+#           # ipv4_address: 192.168.1.105
+#     ports:
+#       - 85:80
 
 
-##################################################
-# --------------------- KUMA ------------------- #
-##################################################
+# ##################################################
+# # --------------------- KUMA ------------------- #
+# ##################################################
 
-  kuma:
-    container_name: kuma
-    image: my_kuma_img
-    build: ./requirements/bonus/kuma/.
-    restart: always
-    depends_on:
-      - website
-    networks:
-        - net_inception
-    volumes:
-      - vol_kuma:/app/data
-    ports:
-      - 3001:3001
+#   kuma:
+#     container_name: kuma
+#     image: my_kuma_img
+#     build: ./requirements/bonus/kuma/.
+#     restart: always
+#     depends_on:
+#       - website
+#     networks:
+#         - net_inception
+#     volumes:
+#       - vol_kuma:/app/data
+#     ports:
+#       - 3001:3001

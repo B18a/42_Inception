@@ -6,6 +6,25 @@
 # https://www.linode.com/docs/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/#download-and-configure-wordpress
 
 
+WP_ADMIN_PW=$(cat /run/secrets/wp_admin_pw)
+DB_USER_PW=$(cat /run/secrets/db_user_pw)
+
+echo $WP_ADMIN_USER
+echo $WP_ADMIN_PW
+
+# if [ -z "$WP_ADMIN_USER" ] || [ -z "$WP_ADMIN_PW" ] || [ -z "$WP_ADMIN_MAIL" ]; then
+#     echo "[ERROR] Missing required environment variables."
+#     echo "[DEBUG] Current values:"
+#     echo "  WP_ADMIN_USER: ${WP_ADMIN_USER:-<not set>}"
+#     echo "  WP_ADMIN_PW: ${WP_ADMIN_PW:-<not set>}"
+#     echo "  WP_ADMIN_MAIL: ${WP_ADMIN_MAIL:-<not set>}"
+#     exit 1
+# fi
+
+# env | grep WP_
+
+
+
 sleep 15
 mkdir -p /run/php
 # chown -R www-data:www-data /run/php
