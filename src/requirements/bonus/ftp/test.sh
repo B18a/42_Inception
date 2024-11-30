@@ -20,7 +20,7 @@ cp build/uFTP /sbin/uFTP
 cp uftpd.cfg /etc/uftpd.cfg
 
 # Configure the server
-nano /etc/uftpd.cfg
+# nano /etc/uftpd.cfg
 
 #Set permissions and root restriction of the configuration file.
 chown root:root /sbin/uFTP
@@ -28,4 +28,4 @@ chown root:root /etc/uftpd.cfg
 chmod -rwx /etc/uftpd.cfg
 
 #Run uFTP, note: root permissions are required to execute the uFTP server.
-uFTP
+# uFTP

@@ -46,6 +46,9 @@ docker run -it --name testrun -v /Users/ajehle/Desktop/local_inception:/root tes
 docker run -it --name testrun -v /Users/ajehle/Desktop/local_inception:/root ftpimg
 
 
+docker inspect container_name | grep "Ports"
+
+
 // mariadb
 // enter db
 mysql -h 127.0.0.1 -P 3306 -u "your_user" -p
