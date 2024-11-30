@@ -17,7 +17,7 @@ make
 
 #Copy the files to the linux path, root permission are required under ubuntu use the sudo command.
 cp build/uFTP /sbin/uFTP
-cp uftpd.cfg /etc/uftpd.cfg
+# cp uftpd.cfg /etc/uftpd.cfg
 
 # Configure the server
 # nano /etc/uftpd.cfg
