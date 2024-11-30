@@ -5,7 +5,7 @@ ENV_FILE = src/.env
 DATA = /Users/ajehle/Desktop/42_Inception
 
 up:
-	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up
+	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up 
 
 upd:
 	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up -d

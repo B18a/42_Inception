@@ -6,23 +6,29 @@
 # https://www.linode.com/docs/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/#download-and-configure-wordpress
 
 
-WP_ADMIN_PW=$(cat /run/secrets/wp_admin_pw)
-DB_USER_PW=$(cat /run/secrets/db_user_pw)
+# WP_ADMIN_PW=$(cat /run/secrets/wp_admin_pw)
+# DB_USER_PW=$(cat /run/secrets/db_user_pw)
 
-echo $WP_ADMIN_USER
-echo $WP_ADMIN_PW
+# echo $WP_ADMIN_USER
+# echo $WP_ADMIN_PW
 
-# if [ -z "$WP_ADMIN_USER" ] || [ -z "$WP_ADMIN_PW" ] || [ -z "$WP_ADMIN_MAIL" ]; then
-#     echo "[ERROR] Missing required environment variables."
-#     echo "[DEBUG] Current values:"
-#     echo "  WP_ADMIN_USER: ${WP_ADMIN_USER:-<not set>}"
-#     echo "  WP_ADMIN_PW: ${WP_ADMIN_PW:-<not set>}"
-#     echo "  WP_ADMIN_MAIL: ${WP_ADMIN_MAIL:-<not set>}"
-#     exit 1
-# fi
+# # if [ -z "$WP_ADMIN_USER" ] || [ -z "$WP_ADMIN_PW" ] || [ -z "$WP_ADMIN_MAIL" ]; then
+# #     echo "[ERROR] Missing required environment variables."
+# #     echo "[DEBUG] Current values:"
+# #     echo "  WP_ADMIN_USER: ${WP_ADMIN_USER:-<not set>}"
+# #     echo "  WP_ADMIN_PW: ${WP_ADMIN_PW:-<not set>}"
+# #     echo "  WP_ADMIN_MAIL: ${WP_ADMIN_MAIL:-<not set>}"
+# #     exit 1
+# # fi
 
-# env | grep WP_
+# # env | grep WP_
 
+WP_ADMIN_PW=$(cat /run/secrets/wp_admin_pw | tr -d '\n\r')
+DB_USER_PW=$(cat /run/secrets/db_user_pw | tr -d '\n\r')
+
+echo "[DEBUG] WP_ADMIN_USER: ${WP_ADMIN_USER}"
+echo "[DEBUG] WP_ADMIN_PW: ${WP_ADMIN_PW}"
+echo "[DEBUG] WP_ADMIN_MAIL: ${WP_ADMIN_MAIL}"
 
 
 sleep 15
@@ -65,6 +71,13 @@ wp core download --path=$WP_PATH --allow-root
 echo "[WORDPRESS] Create a config"
 cd $WP_PATH
 # path must be changed in order to execute the config command otherwise it wont work
+
+echo "[DEBUG] WP_PATH: ${WP_PATH}"
+echo "[DEBUG] DB_NAME: ${DB_NAME}"
+echo "[DEBUG] DB_USER: ${DB_USER}"
+echo "[DEBUG] DB_USER_PW: ${DB_USER_PW}"
+echo "[DEBUG] DB_HOST: ${DB_HOST}"
+
 wp config create \
     --path=$WP_PATH \
     --dbname=$DB_NAME \
@@ -72,6 +85,10 @@ wp config create \
     --dbpass=$DB_USER_PW \
     --dbhost=$DB_HOST \
     --allow-root
+
+# wp config create --path=$WP_PATH --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_USER_PW --dbhost=$DB_HOST --allow-root
+
+echo "[WORDPRESS] config created"
 
 
 ########################################################

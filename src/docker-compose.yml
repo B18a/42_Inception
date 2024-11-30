@@ -1,6 +1,6 @@
 
 # images names must be changed!!!!!!
-# version: '3.8'
+version: '3.9'
 
 ##################################################
 # --------------------- VOLUMES ---------------- #
@@ -28,11 +28,11 @@ networks:
 ##################################################
 secrets:
   wp_admin_pw:
-    file: ./secrets/wp_admin_pw.txt
+    file: ./secrets/wp_admin_pw
   db_user_pw:
-    file: ./secrets/db_user_pw.txt
+    file: ./secrets/db_user_pw
   db_root_pw:
-    file: ./secrets/db_root_pw.txt
+    file: ./secrets/db_root_pw
 
 services:
 ##################################################
@@ -67,9 +67,9 @@ services:
     restart: always
     env_file:
       - .env
-    environment:
-      - DB_USER_PW=/run/secrets/db_user_pw
-      - DB_ROOT_PW=/run/secrets/db_root_pw
+    # environment:
+    #   - DB_USER_PW=/run/secrets/db_user_pw
+    #   - DB_ROOT_PW=/run/secrets/db_root_pw
     secrets:
       - db_user_pw
       - db_root_pw

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+DB_USER_PW=$(cat /run/secrets/db_user_pw | tr -d '\n\r')
+DB_ROOT_PW=$(cat /run/secrets/db_root_pw | tr -d '\n\r')
+
+
 # Ensure the run directory exists and has correct permissions
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
@@ -43,5 +47,10 @@ for i in {1..10}; do
     sleep 1
 done
 
+echo "[DEBUG] DB_NAME: ${DB_NAME}"
+echo "[DEBUG] DB_USER: ${DB_USER}"
+echo "[DEBUG] DB_USER_PW: ${DB_USER_PW}"
+
+echo "[INCEPTION] Database done!!!"
 # Keep the container running by waiting for mysqld_safe to exit
 wait
