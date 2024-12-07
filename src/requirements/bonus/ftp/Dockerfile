@@ -1,27 +1,20 @@
 FROM debian:bullseye
 
 RUN apt-get update -y && apt-get upgrade -y 
+# && \
+    # apt-get install vsftpd -y 
 
 RUN apt-get install make git gcc nano ftp -y
 
-COPY ./uftpd.cfg ./uftpd.cfg
+COPY ./test.sh /test.sh
+RUN chmod 777 test.sh
 
-RUN git clone https://github.com/kingk85/uFTP.git
+# RUN mkdir -p uFTP/etc
 
-RUN cd uFTP
+# COPY ./uftpd.cfg ./uFTP/etc/uftpd.cfg
+# RUN chmod 777 ./uFTP/etc/uftpd.cfg
 
-RUN make
-
-RUN cp build/uFTP /sbin/uFTP
-
-RUN cd ..
-RUN cp uftpd.cfg uFTP/etc/uftpd.cfg
-RUN cd uFTP
-
-RUN chown root:root /sbin/uFTP
-RUN chown root:root /etc/uftpd.cfg
-RUN chmod -rwx /etc/uftpd.cfg
-
+#RUN ./test.sh
 
 # Expose the FTP port (21)
 EXPOSE 21
@@ -32,5 +25,6 @@ EXPOSE 21
 # vsftpd --no-detach /etc/vsftpd.conf
 
 # CMD ["/sbin/uFTP", "-D"]
-CMD ["uFTP"]
+# CMD ["uFTP"]
 # ENTRYPOINT ["uFTP"]
+

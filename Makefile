@@ -17,6 +17,10 @@ down:
 	docker stop nginx
 	docker stop mariadb
 	docker stop wordpress
+	docker stop redis
+	docker stop adminer
+	docker stop website
+	docker stop ftp
 	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) down
 # docker stop $$(docker ps -qa)
 

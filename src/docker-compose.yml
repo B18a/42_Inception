@@ -1,6 +1,6 @@
 
 # images names must be changed!!!!!!
-version: '3.9'
+# version: '3.9'
 
 ##################################################
 # --------------------- VOLUMES ---------------- #
@@ -123,9 +123,9 @@ services:
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
-# ##################################################
-# # --------------------- FTP -------------------- #
-# ##################################################
+##################################################
+# --------------------- FTP -------------------- #
+##################################################
 
   ftp:
     container_name: ftp
@@ -142,55 +142,55 @@ services:
     ports:
       - 30:21
 
-# ##################################################
-# # --------------------- ADMINER ---------------- #
-# ##################################################
+##################################################
+# --------------------- ADMINER ---------------- #
+##################################################
 
-#   adminer:
-#     container_name: adminer
-#     image: my_adminer_img
-#     build: ./requirements/bonus/adminer/.
-#     restart: always
-#     depends_on:
-#       - mariadb
-#     networks:
-#         net_inception:
-#           # ipv4_address: 192.168.1.104
-#     volumes:
-#       - vol_mariadb:/var/lib/mysql
-#     ports:
-#       - 8080:80
+  adminer:
+    container_name: adminer
+    image: my_adminer_img
+    build: ./requirements/bonus/adminer/.
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+        net_inception:
+          # ipv4_address: 192.168.1.104
+    volumes:
+      - vol_mariadb:/var/lib/mysql
+    ports:
+      - 8080:80
 
-# ##################################################
-# # --------------------- WEBSITE ---------------- #
-# ##################################################
+##################################################
+# --------------------- WEBSITE ---------------- #
+##################################################
 
-#   website:
-#     container_name: website
-#     image: my_website_img
-#     build: ./requirements/bonus/website/.
-#     restart: always
-#     networks:
-#         net_inception:
-#           # ipv4_address: 192.168.1.105
-#     ports:
-#       - 85:80
+  website:
+    container_name: website
+    image: my_website_img
+    build: ./requirements/bonus/website/.
+    restart: always
+    networks:
+        net_inception:
+          # ipv4_address: 192.168.1.105
+    ports:
+      - 85:80
 
 
-# ##################################################
-# # --------------------- KUMA ------------------- #
-# ##################################################
+##################################################
+# --------------------- KUMA ------------------- #
+##################################################
 
-#   kuma:
-#     container_name: kuma
-#     image: my_kuma_img
-#     build: ./requirements/bonus/kuma/.
-#     restart: always
-#     depends_on:
-#       - website
-#     networks:
-#         - net_inception
-#     volumes:
-#       - vol_kuma:/app/data
-#     ports:
-#       - 3001:3001
+  kuma:
+    container_name: kuma
+    image: my_kuma_img
+    build: ./requirements/bonus/kuma/.
+    restart: always
+    depends_on:
+      - website
+    networks:
+        - net_inception
+    volumes:
+      - vol_kuma:/app/data
+    ports:
+      - 3001:3001
