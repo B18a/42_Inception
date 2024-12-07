@@ -1,30 +1,33 @@
 FROM debian:bullseye
 
 RUN apt-get update -y && apt-get upgrade -y 
-# && \
-    # apt-get install vsftpd -y 
 
-RUN apt-get install make git gcc nano ftp -y
+RUN apt-get install -y vsftpd
 
-COPY ./test.sh /test.sh
-RUN chmod 777 test.sh
 
-# RUN mkdir -p uFTP/etc
+# Create an FTP user and set up a home directory
+RUN useradd -m -s /bin/bash ftpuser && \
+    echo "ftpuser:password123" | chpasswd && \
+    mkdir -p /home/ftpuser/ftp && \
+    chmod -R 750 /home/ftpuser/ftp && \
+    chown -R ftpuser:ftpuser /home/ftpuser/ftp
 
-# COPY ./uftpd.cfg ./uFTP/etc/uftpd.cfg
-# RUN chmod 777 ./uFTP/etc/uftpd.cfg
+    # Copy the vsftpd configuration file
+    COPY /tools/vsftpd.conf /etc/vsftpd.conf
 
-#RUN ./test.sh
+# COPY /tools/init.sh .
+# COPY /tools/vsftpd.conf /etc/vsftpd/vsftpd.conf
 
-# Expose the FTP port (21)
-EXPOSE 21
-# EXPOSE 40000:50000
+# RUN chmod +x init.sh
 
-# CMD ["/usr/sbin/vsftpd", "/etc/vsftpd.conf"]
-# CMD ["vsftpd", "--no-detach", "/etc/vsftpd.conf"]
-# vsftpd --no-detach /etc/vsftpd.conf
+# # ENTRYPOINT ["sh", "./init.sh"]
+# ENTRYPOINT ["bash"]
 
-# CMD ["/sbin/uFTP", "-D"]
-# CMD ["uFTP"]
-# ENTRYPOINT ["uFTP"]
 
+
+
+# Expose the FTP ports (default 20 and 21)
+EXPOSE 20 21
+
+# Run vsftpd in the foreground
+CMD ["/usr/sbin/vsftpd", "/etc/vsftpd.conf"]

@@ -141,6 +141,8 @@ services:
       - vol_nginx_wordpress:/var/www/html
     ports:
       - 30:21
+    env_file:
+      - .env
 
 ##################################################
 # --------------------- ADMINER ---------------- #
