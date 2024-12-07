@@ -140,7 +140,8 @@ services:
     volumes:
       - vol_nginx_wordpress:/var/www/html
     ports:
-      - 30:21
+      - 20:20
+      - 21:21
     env_file:
       - .env
 

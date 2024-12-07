@@ -11,7 +11,8 @@ upd:
 	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up -d
 
 build:
-	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) build
+	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) build 
+# --no-cache
 
 down:
 	docker stop nginx
