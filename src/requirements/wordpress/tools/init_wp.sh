@@ -5,24 +5,6 @@
 #########
 # https://www.linode.com/docs/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/#download-and-configure-wordpress
 
-
-# WP_ADMIN_PW=$(cat /run/secrets/wp_admin_pw)
-# DB_USER_PW=$(cat /run/secrets/db_user_pw)
-
-# echo $WP_ADMIN_USER
-# echo $WP_ADMIN_PW
-
-# # if [ -z "$WP_ADMIN_USER" ] || [ -z "$WP_ADMIN_PW" ] || [ -z "$WP_ADMIN_MAIL" ]; then
-# #     echo "[ERROR] Missing required environment variables."
-# #     echo "[DEBUG] Current values:"
-# #     echo "  WP_ADMIN_USER: ${WP_ADMIN_USER:-<not set>}"
-# #     echo "  WP_ADMIN_PW: ${WP_ADMIN_PW:-<not set>}"
-# #     echo "  WP_ADMIN_MAIL: ${WP_ADMIN_MAIL:-<not set>}"
-# #     exit 1
-# # fi
-
-# # env | grep WP_
-
 WP_ADMIN_PW=$(cat /run/secrets/wp_admin_pw | tr -d '\n\r')
 DB_USER_PW=$(cat /run/secrets/db_user_pw | tr -d '\n\r')
 
@@ -131,15 +113,13 @@ wp config set WP_REDIS_PORT 6379 --add --type=constant --allow-root --path=$WP_P
 wp redis enable --allow-root --path=$WP_PATH
 
 
-
-
 ############################
 # theme install - optional #
 ############################
-# wp theme install astra \
-#     --path=$WP_PATH \
-#     --activate \
-#     --allow-root
+wp theme install astra \
+    --path=$WP_PATH \
+    --activate \
+    --allow-root
 
 ###########
 # execute #

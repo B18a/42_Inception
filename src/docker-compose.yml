@@ -1,7 +1,4 @@
 
-# images names must be changed!!!!!!
-# version: '3.9'
-
 ##################################################
 # --------------------- VOLUMES ---------------- #
 ##################################################
@@ -18,14 +15,11 @@ volumes:
 networks:
   net_inception:
     name: net_inception
-    driver: bridge
-    # ipam:
-    #   config:
-    #     - subnet: 192.168.1.0/24
 
 ##################################################
 # --------------------- SECRETS----------------- #
 ##################################################
+
 secrets:
   wp_admin_pw:
     file: ./secrets/wp_admin_pw
@@ -33,6 +27,8 @@ secrets:
     file: ./secrets/db_user_pw
   db_root_pw:
     file: ./secrets/db_root_pw
+  ftp_pw:
+    file: ./secrets/ftp_pw
 
 services:
 ##################################################
@@ -41,7 +37,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: my_nginx_img
+    image: nginx
     build: ./requirements/nginx/.
     restart: always
     depends_on:
@@ -51,8 +47,7 @@ services:
     ports:
       - 443:443
     networks:
-        net_inception:
-          # ipv4_address: 192.168.1.99
+      - net_inception
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
@@ -62,20 +57,16 @@ services:
 
   mariadb:
     container_name: mariadb
-    image: my_maridb_img
+    image: maridb
     build: ./requirements/mariadb/.
     restart: always
     env_file:
       - .env
-    # environment:
-    #   - DB_USER_PW=/run/secrets/db_user_pw
-    #   - DB_ROOT_PW=/run/secrets/db_root_pw
     secrets:
       - db_user_pw
       - db_root_pw
     networks:
-        net_inception:
-          # ipv4_address: 192.168.1.100
+      - net_inception
     volumes:
       - vol_mariadb:/var/lib/mysql
 
@@ -85,22 +76,18 @@ services:
 
   wordpress:
     container_name: wordpress
-    image: my_wordpress_img
+    image: wordpress
     build: ./requirements/wordpress/.
     restart: always
     depends_on:
       - mariadb
     env_file:
       - .env
-    # environment:
-    #   - WP_ADMIN_PW=/run/secrets/wp_admin_pw
-    #   - DB_USER_PW=/run/secrets/db_user_pw
     secrets:
       - wp_admin_pw
       - db_user_pw
     networks:
-        net_inception:
-          # ipv4_address: 192.168.1.101
+      - net_inception
     volumes:
       - vol_nginx_wordpress:/var/www/html
   
@@ -112,14 +99,13 @@ services:
 
   redis:
     container_name: redis
-    image: my_redis_img
+    image: redis
     build: ./requirements/bonus/redis/.
     restart: always
     depends_on:
       - wordpress
     networks:
-        net_inception:
-          # ipv4_address: 192.168.1.102
+      - net_inception
     volumes:
       - vol_nginx_wordpress:/var/www/html
 
@@ -129,21 +115,22 @@ services:
 
   ftp:
     container_name: ftp
-    image: my_ftp_img
+    image: ftp
     build: ./requirements/bonus/ftp/.
     restart: always
     depends_on:
       - wordpress
     networks:
-        net_inception:
-          # ipv4_address: 192.168.1.103
+      - net_inception
     volumes:
       - vol_nginx_wordpress:/var/www/html
     ports:
-      - 20:20
       - 21:21
+      # - 20:20
     env_file:
       - .env
+    secrets:
+      - ftp_pw
 
 ##################################################
 # --------------------- ADMINER ---------------- #
@@ -151,14 +138,13 @@ services:
 
   adminer:
     container_name: adminer
-    image: my_adminer_img
+    image: adminer
     build: ./requirements/bonus/adminer/.
     restart: always
     depends_on:
       - mariadb
     networks:
-        net_inception:
-          # ipv4_address: 192.168.1.104
+      - net_inception
     volumes:
       - vol_mariadb:/var/lib/mysql
     ports:
@@ -170,12 +156,11 @@ services:
 
   website:
     container_name: website
-    image: my_website_img
+    image: website
     build: ./requirements/bonus/website/.
     restart: always
     networks:
-        net_inception:
-          # ipv4_address: 192.168.1.105
+      - net_inception
     ports:
       - 85:80
 
@@ -186,11 +171,9 @@ services:
 
   kuma:
     container_name: kuma
-    image: my_kuma_img
+    image: kuma
     build: ./requirements/bonus/kuma/.
     restart: always
-    depends_on:
-      - website
     networks:
         - net_inception
     volumes:

@@ -51,10 +51,35 @@ docker inspect container_name | grep "Ports"
 
 // mariadb
 // enter db
-mysql -h 127.0.0.1 -P 3306 -u "your_user" -p
+mysql -h 127.0.0.1 -P 3306 -u "myuser" -p
 
 SHOW DATABASES;
 
+USE mydb;
+
 SHOW TABLES;
 
-SELECT * FROM your_table;
+SELECT * FROM wp_comments;
+
+
+
+http://localhost:8080/adminer.php
+
+http://localhost:85/
+
+
+# nginx
+https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files
+
+
+*.conf-Files inside /etc/ngninx/conf.d This is the default directory, which nginx creates after installation. It is used to store virtual host configurations in the *.conf format. However, this is not the best approach.
+
+*.conf-Files inside /etc/nginx/sites-available A more elegant approach is to have the .conf file of your virtual host situated in sites-available.
+
+*.conf-Files inside /etc/nginx/sites-enabled This is where you would symlink the virtual hosts from sites-available, to make nginx read and work with them.
+
+Check $uri: NGINX checks if there is a file /about. If it exists, it serves that file.
+Check $uri/: If /about does not exist as a file, NGINX checks for a directory /about/. If found, it serves that directory.
+Return 404: If neither /about nor /about/ exists, it responds with a 404 Not Found error.
+
+ try_files $uri $uri/ =404;

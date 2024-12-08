@@ -4,29 +4,14 @@ COMPOSE_FILE = src/docker-compose.yml
 ENV_FILE = src/.env
 DATA = /Users/ajehle/Desktop/42_Inception
 
-up:
+up: build
 	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up 
 
-upd:
-	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up -d
-
 build:
-	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) build 
-# --no-cache
+	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) build
 
 down:
-	docker stop nginx
-	docker stop mariadb
-	docker stop wordpress
-	docker stop redis
-	docker stop adminer
-	docker stop website
-	docker stop ftp
-	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) down
-# docker stop $$(docker ps -qa)
-
-logs:
-	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) logs -f wordpress
+	docker stop $$(docker ps -qa)
 
 remove:
 	@if [ -n "$$(docker ps -qa)" ]; then docker stop $$(docker ps -qa); fi

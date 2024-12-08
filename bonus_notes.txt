@@ -1,3 +1,0 @@
-http://localhost:8080/adminer.php
-
-http://localhost:85/
