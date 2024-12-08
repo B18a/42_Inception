@@ -83,3 +83,14 @@ Check $uri/: If /about does not exist as a file, NGINX checks for a directory /a
 Return 404: If neither /about nor /about/ exists, it responds with a 404 Not Found error.
 
  try_files $uri $uri/ =404;
+
+
+#  kuma
+
+http://website
+
+https://nginx
+
+http://adminer/adminer.php
+
+

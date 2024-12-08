@@ -126,7 +126,6 @@ services:
       - vol_nginx_wordpress:/var/www/html
     ports:
       - 21:21
-      # - 20:20
     env_file:
       - .env
     secrets:
