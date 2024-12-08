@@ -1,19 +1,29 @@
 FROM debian:bullseye
 
-RUN apt-get update -y && apt-get upgrade -y 
+# Install vsftpd
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y vsftpd \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y vsftpd
-
+# Copy configuration and initialization scripts
 COPY /tools/vsftpd.conf /etc/vsftpd/vsftpd.conf
+COPY /tools/init.sh /init.sh
 
-COPY /tools/init.sh .
+# Ensure the init script is executable
+RUN chmod +x /init.sh
 
-ENTRYPOINT ["bash", "./init.sh"]
+# Set the entrypoint to the init script
+ENTRYPOINT ["bash", "/init.sh"]
 
 
+# FROM debian:bullseye
 
-# CMD ["/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf"]
+# RUN apt-get update -y && apt-get upgrade -y 
+
+# RUN apt-get install -y vsftpd
 
 # COPY /tools/vsftpd.conf /etc/vsftpd/vsftpd.conf
 
-# RUN chmod +x init.sh
+# COPY /tools/init.sh .
+# RUN chmod 777 init.sh .
+
+# ENTRYPOINT ["bash", "./init.sh"]
