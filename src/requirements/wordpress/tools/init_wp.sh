@@ -89,7 +89,7 @@ done
 echo "[WORDPRESS] Run the installation"
 wp core install \
     --path=$WP_PATH \
-    --url='localhost' \
+    --url=$DOMAIN_NAME \
     --title='42 INCEPTION' \
     --admin_user=$WP_ADMIN_USER \
     --admin_password=$WP_ADMIN_PW \

@@ -5,10 +5,13 @@ ENV_FILE = src/.env
 DATA = /Users/ajehle/Desktop/42_Inception
 
 up: build
-	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up -d
+	docker compose -p $(NAME) -f $(COMPOSE_FILE) --env-file $(ENV_FILE) up
 
 build:
-	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) build
+	mkdir -p /home/ajehle/data/mariadb
+	mkdir -p /home/ajehle/data/wordpress
+	mkdir -p /home/ajehle/data/kuma
+	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) build --no-cache
 
 down:
 	docker stop $$(docker ps -qa)

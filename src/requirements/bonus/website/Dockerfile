@@ -7,5 +7,14 @@ RUN apt-get update && apt-get upgrade -y && \
 # Copy your static website files into the default Lighttpd directory
 COPY index.html /var/www/html/
 
+# RUN chmod 777 /var/www/html/index.html
+# RUN chown www-data:www-data /path/to/index.html
+
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+
+
 # Start the Lighttpd service
-CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+# CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+CMD ["/init.sh"]
+
